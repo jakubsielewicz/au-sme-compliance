@@ -11,8 +11,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test tests/engine/csvParser.test.ts tests/engine/classifier.test.ts tests/engine/reportBuilder.test.ts tests/engine/integration.test.ts tests/api/handlers.test.ts tests/gaps.test.ts",
-    "test:engine": "node --import tsx --test tests/engine/csvParser.test.ts tests/engine/classifier.test.ts tests/engine/reportBuilder.test.ts tests/engine/integration.test.ts",
+    "test": "node --import tsx --test tests/engine/csvParser.test.ts tests/engine/classifier.test.ts tests/engine/reportBuilder.test.ts tests/engine/integration.test.ts tests/engine/pdfGenerator.test.ts tests/engine/reportPersistence.test.ts tests/api/handlers.test.ts tests/gaps.test.ts",
+    "test:engine": "node --import tsx --test tests/engine/csvParser.test.ts tests/engine/classifier.test.ts tests/engine/reportBuilder.test.ts tests/engine/integration.test.ts tests/engine/pdfGenerator.test.ts tests/engine/reportPersistence.test.ts",
     "test:api": "node --import tsx --test tests/api/handlers.test.ts"
   },
   "dependencies": {

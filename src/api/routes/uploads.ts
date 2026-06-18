@@ -191,12 +191,18 @@ export async function handlePatchMapping(req: ApiRequest): Promise<ApiResponse> 
 
   await databaseClient.updateUploadStatus(uploadId, "complete");
 
-  // Store report
+  // Persist the full AuditReport JSON to storage so it can be retrieved later
   const report = result.report;
+  const storedReportPath = await storageClient.storeFile(
+    "reports",
+    `${req.accountId}/${uploadId}.json`,
+    Buffer.from(JSON.stringify(report))
+  );
+
   const reportId = await databaseClient.insertReport({
     accountId: req.accountId,
     uploadId,
-    storagePathEncrypted: `encrypted://reports/${req.accountId}/${uploadId}.json`,
+    storagePathEncrypted: storedReportPath,
     generatedAt: report.generatedAt,
     rateTableEffectiveDate: report.rateTableEffectiveDate,
     employeeCountChecked: report.summary.employeeCountChecked,

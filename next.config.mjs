@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // pdfkit and its transitive deps (fontkit, restructure, iconv-lite) use
+  // Node-only APIs. Mark them as server externals so Next.js passes them
+  // through to Node at runtime instead of trying to bundle them with webpack.
+  serverExternalPackages: ["pdfkit", "fontkit", "restructure", "iconv-lite"],
+
   // Strict mode for catching issues early
   reactStrictMode: true,
 

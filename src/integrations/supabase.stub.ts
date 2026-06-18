@@ -59,10 +59,14 @@ export interface IDatabaseClient {
   updateUploadStatus(uploadId: string, status: StoredUpload["status"]): Promise<void>;
   /** Get upload by id (scoped to account) */
   getUpload(uploadId: string, accountId: string): Promise<StoredUpload | null>;
+  /** List all uploads for an account (newest first) */
+  listUploads(accountId: string): Promise<StoredUpload[]>;
   /** Insert a report record, return its id */
   insertReport(report: Omit<StoredReport, "reportId">): Promise<string>;
   /** Get report by id (scoped to account) */
   getReport(reportId: string, accountId: string): Promise<StoredReport | null>;
+  /** List all reports for an account (newest first) */
+  listReports(accountId: string): Promise<StoredReport[]>;
 }
 
 // ---------------------------------------------------------------------------
@@ -119,6 +123,15 @@ class InMemoryDatabaseClient implements IDatabaseClient {
     return upload;
   }
 
+  async listUploads(accountId: string): Promise<StoredUpload[]> {
+    const result: StoredUpload[] = [];
+    for (const upload of this.uploads.values()) {
+      if (upload.accountId === accountId) result.push(upload);
+    }
+    // Newest first (by uploadedAt)
+    return result.sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt));
+  }
+
   async insertReport(report: Omit<StoredReport, "reportId">): Promise<string> {
     const id = this.nextId();
     this.reports.set(id, { ...report, reportId: id });
@@ -129,6 +142,15 @@ class InMemoryDatabaseClient implements IDatabaseClient {
     const report = this.reports.get(reportId);
     if (!report || report.accountId !== accountId) return null;
     return report;
+  }
+
+  async listReports(accountId: string): Promise<StoredReport[]> {
+    const result: StoredReport[] = [];
+    for (const report of this.reports.values()) {
+      if (report.accountId === accountId) result.push(report);
+    }
+    // Newest first (by generatedAt)
+    return result.sort((a, b) => b.generatedAt.localeCompare(a.generatedAt));
   }
 }
 
