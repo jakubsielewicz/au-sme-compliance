@@ -5,8 +5,8 @@
 
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { runComplianceCheck } from "../../src/engine/index.ts";
-import type { ColumnMapping } from "../../src/engine/csvParser.ts";
+import { runComplianceCheck } from "../../src/engine/index";
+import type { ColumnMapping } from "../../src/engine/csvParser";
 
 const DEFAULT_MAPPING: ColumnMapping = {
   employee_ref: "Employee Name",

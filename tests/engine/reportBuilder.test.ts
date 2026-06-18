@@ -11,8 +11,8 @@ import {
   DISCLAIMER_TEXT,
   DISCLAIMER_SHORT,
   DISCLAIMER_VERSION,
-} from "../../src/engine/reportBuilder.ts";
-import type { ClassificationResult } from "../../src/engine/classifier.ts";
+} from "../../src/engine/reportBuilder";
+import type { ClassificationResult } from "../../src/engine/classifier";
 
 function makeResult(overrides: Partial<ClassificationResult> = {}): ClassificationResult {
   return {

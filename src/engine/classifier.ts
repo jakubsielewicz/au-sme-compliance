@@ -20,8 +20,8 @@ import {
   AWARD_RATES,
   type AwardClassification,
   type EmploymentType,
-} from "../fixtures/awards.ts";
-import type { EmployeeRow } from "./csvParser.ts";
+} from "../fixtures/awards";
+import type { EmployeeRow } from "./csvParser";
 
 export type ConfidenceScore = "HIGH" | "MEDIUM" | "LOW";
 export type GapDirection = "UNDERPAID" | "OVERPAID" | "AT_RATE" | "EXCLUDED";

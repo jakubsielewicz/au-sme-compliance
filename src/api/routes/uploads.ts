@@ -6,11 +6,11 @@
  * Wire into Next.js API routes or Express as needed.
  */
 
-import { runComplianceCheck } from "../../engine/index.ts";
-import { databaseClient, storageClient } from "../../integrations/supabase.stub.ts";
-import { UploadMappingPatchSchema, formatZodError } from "../../lib/validation.ts";
-import { makeErrorResponse, generateRequestId, AppError } from "../../lib/errors.ts";
-import type { ColumnMapping } from "../../engine/index.ts";
+import { runComplianceCheck } from "../../engine/index";
+import { databaseClient, storageClient } from "../../integrations/supabase.stub";
+import { UploadMappingPatchSchema, formatZodError } from "../../lib/validation";
+import { makeErrorResponse, generateRequestId, AppError } from "../../lib/errors";
+import type { ColumnMapping } from "../../engine/index";
 
 export interface ApiRequest {
   accountId: string;

@@ -2,10 +2,10 @@
  * Billing API Handlers — Thin wrappers over the Stripe stub.
  */
 
-import { stripeClient } from "../../integrations/stripe.stub.ts";
-import { CheckoutSchema, formatZodError } from "../../lib/validation.ts";
-import { makeErrorResponse, generateRequestId } from "../../lib/errors.ts";
-import type { ApiRequest, ApiResponse } from "./uploads.ts";
+import { stripeClient } from "../../integrations/stripe.stub";
+import { CheckoutSchema, formatZodError } from "../../lib/validation";
+import { makeErrorResponse, generateRequestId } from "../../lib/errors";
+import type { ApiRequest, ApiResponse } from "./uploads";
 
 // POST /billing/checkout
 export async function handleCreateCheckout(req: ApiRequest): Promise<ApiResponse> {

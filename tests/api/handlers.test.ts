@@ -11,16 +11,16 @@ import {
   handlePatchMapping,
   handleGetUploadStatus,
   type ApiRequest,
-} from "../../src/api/routes/uploads.ts";
+} from "../../src/api/routes/uploads";
 import {
   handleListAwards,
   handleGetAwardClassifications,
-} from "../../src/api/routes/awards.ts";
+} from "../../src/api/routes/awards";
 import {
   handleCreateCheckout,
   handleStripeWebhook,
-} from "../../src/api/routes/billing.ts";
-import { validateAuth } from "../../src/api/middleware/auth.ts";
+} from "../../src/api/routes/billing";
+import { validateAuth } from "../../src/api/middleware/auth";
 
 function makeReq(overrides: Partial<ApiRequest> = {}): ApiRequest {
   return {

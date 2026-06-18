@@ -6,8 +6,8 @@
 
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { classifyEmployee, classifyAll } from "../../src/engine/classifier.ts";
-import type { EmployeeRow } from "../../src/engine/csvParser.ts";
+import { classifyEmployee, classifyAll } from "../../src/engine/classifier";
+import type { EmployeeRow } from "../../src/engine/csvParser";
 
 function makeRow(overrides: Partial<EmployeeRow> = {}): EmployeeRow {
   return {

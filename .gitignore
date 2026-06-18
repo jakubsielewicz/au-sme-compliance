@@ -6,6 +6,9 @@ dist/
 .next/
 out/
 
+# Next.js generated types (regenerated on build/dev)
+next-env.d.ts
+
 # Environment (NEVER commit — contains real secrets)
 .env
 .env.local

@@ -5,11 +5,11 @@
  * Pure module: no network, no DB, no credentials.
  */
 
-export { validateCsvFile, parseCsv, parseCsvLine } from "./csvParser.ts";
-export type { ColumnMapping, EmployeeRow, ParseResult, ParseError, CsvValidationResult } from "./csvParser.ts";
+export { validateCsvFile, parseCsv, parseCsvLine } from "./csvParser";
+export type { ColumnMapping, EmployeeRow, ParseResult, ParseError, CsvValidationResult } from "./csvParser";
 
-export { classifyEmployee, classifyAll } from "./classifier.ts";
-export type { ClassificationResult, ConfidenceScore, GapDirection, ClassifyOptions } from "./classifier.ts";
+export { classifyEmployee, classifyAll } from "./classifier";
+export type { ClassificationResult, ConfidenceScore, GapDirection, ClassifyOptions } from "./classifier";
 
 export {
   buildAuditReport,
@@ -17,18 +17,18 @@ export {
   DISCLAIMER_TEXT,
   DISCLAIMER_SHORT,
   DISCLAIMER_VERSION,
-} from "./reportBuilder.ts";
-export type { AuditReport, AuditReportSummary } from "./reportBuilder.ts";
+} from "./reportBuilder";
+export type { AuditReport, AuditReportSummary } from "./reportBuilder";
 
-export { AWARDS, AWARD_CLASSIFICATIONS, AWARD_RATES, RATE_TABLE_EFFECTIVE_DATE } from "../fixtures/awards.ts";
-export type { Award, AwardClassification, AwardRate, EmploymentType } from "../fixtures/awards.ts";
+export { AWARDS, AWARD_CLASSIFICATIONS, AWARD_RATES, RATE_TABLE_EFFECTIVE_DATE } from "../fixtures/awards";
+export type { Award, AwardClassification, AwardRate, EmploymentType } from "../fixtures/awards";
 
-import { validateCsvFile, parseCsv } from "./csvParser.ts";
-import { classifyAll } from "./classifier.ts";
-import { buildAuditReport } from "./reportBuilder.ts";
-import type { ColumnMapping } from "./csvParser.ts";
-import type { AuditReport } from "./reportBuilder.ts";
-import { AWARDS } from "../fixtures/awards.ts";
+import { validateCsvFile, parseCsv } from "./csvParser";
+import { classifyAll } from "./classifier";
+import { buildAuditReport } from "./reportBuilder";
+import type { ColumnMapping } from "./csvParser";
+import type { AuditReport } from "./reportBuilder";
+import { AWARDS } from "../fixtures/awards";
 
 export interface RunCheckOptions {
   csvContent: string;

@@ -13,7 +13,7 @@
  * via environment variable SUPABASE_JWT_SECRET (see .env.example).
  */
 
-import { makeErrorResponse, generateRequestId } from "../../lib/errors.ts";
+import { makeErrorResponse, generateRequestId } from "../../lib/errors";
 
 export interface AuthResult {
   authenticated: boolean;

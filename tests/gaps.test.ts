@@ -21,21 +21,21 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
 // Engine
-import { parseCsv, validateCsvFile, parseCsvLine } from "../src/engine/csvParser.ts";
-import { classifyEmployee, classifyAll } from "../src/engine/classifier.ts";
-import { buildAuditReport, DISCLAIMER_VERSION } from "../src/engine/reportBuilder.ts";
-import { runComplianceCheck } from "../src/engine/index.ts";
-import { AWARDS } from "../src/fixtures/awards.ts";
-import type { ColumnMapping, EmployeeRow } from "../src/engine/csvParser.ts";
+import { parseCsv, validateCsvFile, parseCsvLine } from "../src/engine/csvParser";
+import { classifyEmployee, classifyAll } from "../src/engine/classifier";
+import { buildAuditReport, DISCLAIMER_VERSION } from "../src/engine/reportBuilder";
+import { runComplianceCheck } from "../src/engine/index";
+import { AWARDS } from "../src/fixtures/awards";
+import type { ColumnMapping, EmployeeRow } from "../src/engine/csvParser";
 
 // API
-import { handleCreateUpload, handlePatchMapping, handleGetUploadStatus } from "../src/api/routes/uploads.ts";
-import { handleListAwards } from "../src/api/routes/awards.ts";
-import { handleStripeWebhook } from "../src/api/routes/billing.ts";
-import { validateAuth } from "../src/api/middleware/auth.ts";
+import { handleCreateUpload, handlePatchMapping, handleGetUploadStatus } from "../src/api/routes/uploads";
+import { handleListAwards } from "../src/api/routes/awards";
+import { handleStripeWebhook } from "../src/api/routes/billing";
+import { validateAuth } from "../src/api/middleware/auth";
 
 // Stub — direct access for tenant isolation test
-import { databaseClient, storageClient } from "../src/integrations/supabase.stub.ts";
+import { databaseClient, storageClient } from "../src/integrations/supabase.stub";
 
 const DEFAULT_MAPPING: ColumnMapping = {
   employee_ref: "Employee Name",

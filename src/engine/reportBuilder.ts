@@ -6,8 +6,8 @@
  * PDF rendering is handled separately by the pdfGenerator module.
  */
 
-import { RATE_TABLE_EFFECTIVE_DATE } from "../fixtures/awards.ts";
-import type { ClassificationResult } from "./classifier.ts";
+import { RATE_TABLE_EFFECTIVE_DATE } from "../fixtures/awards";
+import type { ClassificationResult } from "./classifier";
 
 export const DISCLAIMER_VERSION = "v1.0-pending-solicitor-approval";
 

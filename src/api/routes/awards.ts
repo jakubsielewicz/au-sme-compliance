@@ -2,9 +2,9 @@
  * Awards API Handlers
  */
 
-import { AWARDS, AWARD_CLASSIFICATIONS, AWARD_RATES, RATE_TABLE_EFFECTIVE_DATE } from "../../fixtures/awards.ts";
-import { makeErrorResponse, generateRequestId } from "../../lib/errors.ts";
-import type { ApiRequest, ApiResponse } from "./uploads.ts";
+import { AWARDS, AWARD_CLASSIFICATIONS, AWARD_RATES, RATE_TABLE_EFFECTIVE_DATE } from "../../fixtures/awards";
+import { makeErrorResponse, generateRequestId } from "../../lib/errors";
+import type { ApiRequest, ApiResponse } from "./uploads";
 
 // GET /awards
 export function handleListAwards(_req: ApiRequest): ApiResponse {

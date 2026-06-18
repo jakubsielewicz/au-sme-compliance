@@ -10,7 +10,7 @@ import {
   parseCsv,
   parseCsvLine,
   type ColumnMapping,
-} from "../../src/engine/csvParser.ts";
+} from "../../src/engine/csvParser";
 
 const DEFAULT_MAPPING: ColumnMapping = {
   employee_ref: "Employee Name",
