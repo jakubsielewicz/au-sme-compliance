@@ -110,6 +110,20 @@ describe("Report persistence round-trip", () => {
         reportData["employee_count_checked"] > 0
     );
 
+    // Detail: handleGetReport includes the per-employee breakdown for the
+    // results table (US-06), sourced from the persisted AuditReport JSON.
+    const detailEmployees = reportData["employees"] as Array<
+      Record<string, unknown>
+    >;
+    assert.ok(Array.isArray(detailEmployees), "employees array must be present");
+    assert.ok(detailEmployees.length > 0, "employees must be non-empty");
+    assert.ok(detailEmployees[0]["employeeRef"], "employee has employeeRef");
+    assert.ok(
+      "confidenceScore" in detailEmployees[0],
+      "employee has confidenceScore"
+    );
+    assert.ok(reportData["summary"], "full summary must be present");
+
     // Step 4: Download as PDF
     const downloadRes = await handleDownloadReport(
       makeReq({ params: { reportId } })

@@ -154,6 +154,23 @@ class InMemoryDatabaseClient implements IDatabaseClient {
   }
 }
 
-// Exported singleton stubs — replace with real Supabase clients in production
-export const storageClient: IStorageClient = new InMemoryStorageClient();
-export const databaseClient: IDatabaseClient = new InMemoryDatabaseClient();
+// Exported singleton stubs — replace with real Supabase clients in production.
+//
+// Pinned to globalThis so the in-memory state is shared across Next.js route
+// bundles (each API route is a separate module graph) and survives dev HMR.
+// NOTE: this only shares state WITHIN a single Node process / warm serverless
+// instance. On Vercel, separate/cold lambda invocations have independent
+// memory — a real backing store (Supabase, Phase 4) is required for reliable
+// cross-request persistence in production.
+const globalForStubs = globalThis as unknown as {
+  __stubStorageClient?: IStorageClient;
+  __stubDatabaseClient?: IDatabaseClient;
+};
+
+export const storageClient: IStorageClient =
+  globalForStubs.__stubStorageClient ??
+  (globalForStubs.__stubStorageClient = new InMemoryStorageClient());
+
+export const databaseClient: IDatabaseClient =
+  globalForStubs.__stubDatabaseClient ??
+  (globalForStubs.__stubDatabaseClient = new InMemoryDatabaseClient());

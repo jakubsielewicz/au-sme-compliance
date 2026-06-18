@@ -89,6 +89,26 @@ export async function handleGetReport(req: ApiRequest): Promise<ApiResponse> {
     };
   }
 
+  // Load the full persisted AuditReport for per-employee detail. Degrade
+  // gracefully to metadata-only if the stored JSON is missing/unreadable —
+  // the PDF download path remains the authoritative copy.
+  let employees: AuditReport["employees"] = [];
+  let fullSummary: AuditReport["summary"] | null = null;
+  let awardName: string | null = null;
+  let awardCode: string | null = null;
+  let businessName: string | null = null;
+  try {
+    const fileBuffer = await storageClient.getFile(storedReport.storagePathEncrypted);
+    const full = JSON.parse(fileBuffer.toString("utf-8")) as AuditReport;
+    employees = full.employees;
+    fullSummary = full.summary;
+    awardName = full.awardName;
+    awardCode = full.awardCode;
+    businessName = full.businessName;
+  } catch {
+    // Detail unavailable — return metadata only.
+  }
+
   return {
     status: 200,
     body: {
@@ -102,6 +122,11 @@ export async function handleGetReport(req: ApiRequest): Promise<ApiResponse> {
         total_gap_weekly_aud: storedReport.totalGapWeeklyAud,
         disclaimer_version: storedReport.disclaimerVersion,
         purge_at: storedReport.purgeAt,
+        award_name: awardName,
+        award_code: awardCode,
+        business_name: businessName,
+        summary: fullSummary,
+        employees,
       },
       request_id: requestId,
     },
