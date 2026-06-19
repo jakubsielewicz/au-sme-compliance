@@ -61,6 +61,77 @@ Agent hooks apply only to the agent's own tool calls — deploying from your ter
 is unaffected. To restore the gated discipline here, the hooks need adapting to the
 flat layout (tracked as a follow-up).
 
+## Phase 4a — Supabase setup
+
+Phase 4a wires the real Supabase Postgres + Storage behind an env-gate. When the
+env vars below are absent the app silently uses the in-memory stubs — local dev and
+CI tests require zero credentials.
+
+### Required environment variables (server-side only)
+
+| Var | Notes |
+|---|---|
+| `SUPABASE_URL` | Project URL, e.g. `https://<project-ref>.supabase.co` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service-role JWT — server-side only, never expose to the browser. Bypasses RLS. |
+
+Coming in Phase 4b (not needed yet):
+- `SUPABASE_ANON_KEY` — used by browser clients for public/anon queries
+- `SUPABASE_JWT_SECRET` — used by auth middleware to verify user JWTs
+
+Set via `vercel env add <NAME> production` for the Vercel deployment, or in your
+local shell for manual testing. Do NOT commit values to any file.
+
+### Apply the schema
+
+```bash
+# 1. Apply schema (idempotent — uses IF NOT EXISTS / IF NOT EXISTS guards)
+psql $SUPABASE_DB_URL -f iac/supabase-config.sql
+
+# 2. Seed demo user + account (idempotent — ON CONFLICT DO NOTHING)
+psql $SUPABASE_DB_URL -f iac/supabase-seed.sql
+```
+
+`SUPABASE_DB_URL` is the direct Postgres connection string from the Supabase dashboard
+(Settings → Database → Connection string → URI mode).
+
+Alternatively use the Supabase CLI:
+```bash
+supabase db push --db-url $SUPABASE_DB_URL
+```
+
+### Storage buckets
+
+Create two **private** buckets in the Supabase dashboard (Storage tab) or via the
+Supabase CLI before deploying:
+
+| Bucket | Visibility |
+|---|---|
+| `uploads` | Private |
+| `reports` | Private |
+
+Private means no public URL access — signed URLs are generated on-demand by the API
+(`getSignedUrl`) when a download is requested.
+
+### Tenant isolation
+
+The service-role key bypasses Row Level Security. Tenant scoping is enforced at the
+API layer: every database query in `src/integrations/supabase.real.ts` filters by
+`account_id`. RLS policies (defined in `iac/supabase-config.sql`) are defense-in-depth
+for Phase 4b when API routes switch to user JWTs.
+
+### Smoke check with real Supabase
+
+After setting env vars and applying schema + seed:
+1. `GET /api/health` → `{"status":"ok"}`
+2. POST a CSV upload, confirm it persists across separate requests and cold starts.
+3. Check the Supabase dashboard → Table Editor → `uploads` and `reports` rows appear.
+
+### Fallback / local dev
+
+With no `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` in the environment, the factory
+in `src/integrations/store.ts` automatically selects the in-memory stubs. No config
+changes needed for local dev or CI.
+
 ## Recurring obligations
 - FWC award rate-table refresh each July (rates are data, not code — PRD US-08).
 - Employment-solicitor sign-off on disclaimer + each new award before public launch.

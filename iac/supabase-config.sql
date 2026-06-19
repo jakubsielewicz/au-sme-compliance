@@ -89,6 +89,13 @@ CREATE TABLE IF NOT EXISTS award_rates (
 -- =============================================================
 -- UPLOADS TABLE
 -- =============================================================
+-- NOTE ON RLS vs SERVICE ROLE:
+-- RLS is enabled on this table (defense-in-depth for Phase 4b when requests
+-- arrive with a Supabase user JWT). The Phase 4a API layer uses the
+-- SERVICE_ROLE key which bypasses RLS. Tenant scoping is enforced manually
+-- in every query via .eq("account_id", accountId) in supabase.real.ts.
+-- When Phase 4b upgrades to user JWTs the RLS policies will be the primary
+-- isolation mechanism.
 CREATE TYPE upload_status AS ENUM ('pending', 'processing', 'complete', 'error');
 
 CREATE TABLE IF NOT EXISTS uploads (
@@ -98,8 +105,12 @@ CREATE TABLE IF NOT EXISTS uploads (
     storage_path VARCHAR(500) NOT NULL,
     row_count INTEGER,
     status upload_status NOT NULL DEFAULT 'pending',
+    -- column_mapping is nullable; not used by the current compliance flow
+    -- (mapping is applied inline at PATCH /uploads/:id/mapping and then discarded).
     column_mapping JSONB,
-    award_id UUID REFERENCES awards(id),
+    -- award_code stores the FWC code string (e.g. "MA000009") from fixtures.
+    -- No FK to the awards table — fixtures are the source of truth in Phase 4a.
+    award_code VARCHAR(50) NOT NULL,
     uploaded_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     purge_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() + INTERVAL '90 days')
 );
@@ -132,6 +143,8 @@ CREATE TABLE IF NOT EXISTS employee_records (
 -- =============================================================
 -- REPORTS TABLE
 -- =============================================================
+-- NOTE ON RLS vs SERVICE ROLE: same as uploads — service-role key bypasses
+-- RLS; tenant scoping enforced by .eq("account_id", accountId) in the API.
 CREATE TABLE IF NOT EXISTS reports (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     account_id UUID NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,

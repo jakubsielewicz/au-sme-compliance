@@ -6,7 +6,7 @@
  * been persisted to storage by handlePatchMapping.
  */
 
-import { databaseClient, storageClient } from "../../integrations/supabase.stub";
+import { databaseClient, storageClient } from "../../integrations/store";
 import { makeErrorResponse, generateRequestId } from "../../lib/errors";
 import { renderReportPdf } from "../../engine/pdfGenerator";
 import type { ApiRequest, ApiResponse } from "./uploads";

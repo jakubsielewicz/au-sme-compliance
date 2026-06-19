@@ -7,8 +7,14 @@
  * TODO(Phase 4): replace demo token with real Supabase Auth session.
  */
 
-// Demo token accepted by the Phase 2 stub auth middleware
-const DEMO_TOKEN = "valid_demoacct_demouser";
+// Demo token accepted by the stub auth middleware (validateAuth splits on "_";
+// UUIDs use "-" so the split correctly yields the UUID parts).
+//   accountId → 00000000-0000-0000-0000-0000000000a1  (matches accounts.id seed row)
+//   userId    → 00000000-0000-0000-0000-0000000000a2  (matches users.id seed row)
+// This makes account_id a valid FK in the real Supabase DB while remaining
+// a no-op for the in-memory stub.
+// TODO(Phase 4b): replace with real Supabase Auth session token.
+const DEMO_TOKEN = "valid_00000000-0000-0000-0000-0000000000a1_00000000-0000-0000-0000-0000000000a2";
 
 function authHeaders(): Record<string, string> {
   return { Authorization: `Bearer ${DEMO_TOKEN}` };

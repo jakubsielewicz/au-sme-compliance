@@ -7,7 +7,7 @@
  */
 
 import { runComplianceCheck } from "../../engine/index";
-import { databaseClient, storageClient } from "../../integrations/supabase.stub";
+import { databaseClient, storageClient } from "../../integrations/store";
 import { UploadMappingPatchSchema, formatZodError } from "../../lib/validation";
 import { makeErrorResponse, generateRequestId, AppError } from "../../lib/errors";
 import type { ColumnMapping } from "../../engine/index";
